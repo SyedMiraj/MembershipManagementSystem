@@ -2,7 +2,7 @@
 
 **Design Architecture**
 
-![Design Layout](./MMS.png)
+![Design Layout](resources/MMS.png)
 
 **Classes are:**
 - Session
