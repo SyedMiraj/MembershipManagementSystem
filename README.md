@@ -1,6 +1,7 @@
 ### Membership Management System
 
 **Design Architecture**
+
 ![Design Layout](./MMS.png)
 
 **Classes are:**
