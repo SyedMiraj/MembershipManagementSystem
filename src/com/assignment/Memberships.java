@@ -9,8 +9,7 @@ public class Memberships {
 
     public Memberships() {
         memberships = new ArrayList<>();
-        memberships.add(new Membership(13697480, "Thomas Muller", "thomas.muller@uts.com", "99991111", "3 Byern St. Sydney 2001", 2134.5));
-        memberships.add(new Membership(13697480, "Alice Stefan", "alice.stefan@uts.com", "99991111", "3 Byern St. Sydney 2001", 2134.5));
+
     }
 
     public List<Membership> getMemberships() {

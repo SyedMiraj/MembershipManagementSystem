@@ -9,8 +9,6 @@ public class Supermarkets {
 
     public Supermarkets() {
         supermarkets = new ArrayList<>();
-        supermarkets.add(new Supermarket("John Smith", "john.smith@uts.com", "user222"));
-        supermarkets.add(new Supermarket("Jane Tyler", "jane.tyler@uts.com", "super123"));
     }
 
     public List<Supermarket> getSupermarkets() {
