@@ -5,11 +5,13 @@ public class Supermarket {
     private String name;
     private String email;
     private String password;
+    private Memberships memberships;
 
     public Supermarket(String name, String email, String password) {
         this.name = name;
         this.email = email;
         this.password = password;
+        this.memberships = new Memberships();
     }
 
     public String getName() {
@@ -34,5 +36,13 @@ public class Supermarket {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Memberships getMemberships() {
+        return memberships;
+    }
+
+    public void setMemberships(Memberships memberships) {
+        this.memberships = memberships;
     }
 }

@@ -1,7 +1,5 @@
 package com.assignment;
 
-import java.math.BigDecimal;
-
 public class Membership {
 
     private int id;

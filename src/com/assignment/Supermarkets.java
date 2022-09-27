@@ -8,7 +8,6 @@ public class Supermarkets {
     private List<Supermarket> supermarkets;
 
     public Supermarkets() {
-        supermarkets = new ArrayList<>();
     }
 
     public List<Supermarket> getSupermarkets() {
