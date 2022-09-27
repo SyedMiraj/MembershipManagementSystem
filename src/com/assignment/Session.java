@@ -1,6 +1,7 @@
 package com.assignment;
 
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Session {
 
@@ -90,20 +91,18 @@ public class Session {
                 break;
             case "4": this.displayUpdateMembership(scanner);
                 break;
-//                case "5": session.displayViewMembership();
-//                    break;
-//                case "6": session.displayViewMembership();
-//                    break;
+            case "5": this.displayDeleteMembership(scanner);
+                break;
+            case "6": this.displaySlipReport(scanner);
+                break;
 //                case "7": session.displayViewMembership();
 //                    break;
 //                case "8": session.displayViewMembership();
 //                    break;
 //                case "9": session.displayViewMembership();
 //                    break;
-//                case "10": session.displayViewMembership();
-//                    break;
-//                case "11": session.displayViewMembership();
-//                    break;
+                case "10": this.displayLogout(scanner);
+                    break;
             default:
                 System.out.println("Invalid menu selected");
                 this.menuRedirection(scanner);
@@ -111,20 +110,84 @@ public class Session {
         }
     }
 
+    private void displaySlipReport(Scanner scanner) {
+    }
+
+    private void displayDeleteMembership(Scanner scanner) {
+        System.out.println("Which user want to remove ?");
+        System.out.print("Type email: ");
+        String email = scanner.nextLine();
+        Optional<Membership> membership = this.loggedInUser.getMemberships().findMember(email);
+        if(membership.isPresent()){
+            this.loggedInUser.getMemberships().removeMembership(membership.get());
+            System.out.println("Membership deleted");
+        } else {
+            System.out.println("No Membership found.");
+        }
+        this.menuRedirection(scanner);
+    }
+
+    private void displayLogout(Scanner scanner) {
+        System.out.println("Are you want to logout? y/N");
+        String response = scanner.nextLine();
+        if(response.toUpperCase().startsWith("Y")){
+            this.loggedInUser = null;
+            System.out.println("You are logged out.");
+        } else
+        this.menuRedirection(scanner);
+    }
+
     private void displayUpdateMembership(Scanner scanner) {
+        System.out.println("Which user's expense want to update ?");
+        System.out.print("Type email: ");
+        String email = scanner.nextLine();
+        Optional<Membership> membership = this.loggedInUser.getMemberships().findMember(email);
+        if(membership.isPresent()){
+            System.out.print("Enter expense amount: ");
+            if(scanner.hasNextDouble()){
+                double expense = scanner.nextDouble();
+                this.loggedInUser.getMemberships().updateMember(email, expense);
+                System.out.println("Membership updated");
+            }
+        }
+        this.menuRedirection(scanner);
     }
 
     private void displayRetrieveMembership(Scanner scanner) {
+        System.out.print("Please type a name or email or phone number: ");
+        String nameOrEmailOrPhone = scanner.nextLine();
+        List<Membership> filteredResult = this.loggedInUser.getMemberships().searchMembership(nameOrEmailOrPhone);
+        this.utils.membershipHeader();
+        for(Membership membership: filteredResult){
+            System.out.format(this.utils.membershipFormat, membership.getName(), membership.getName(), membership.getPhone(), membership.getType());
+        }
+        backToMainMenu(scanner);
     }
 
     private void displayAddMembership(Scanner scanner) {
-
+        System.out.println("Membership name: ");
+        String memberName = scanner.nextLine();
+        System.out.println("Email: ");
+        String email = scanner.nextLine();
+        System.out.println("Phone: ");
+        String phone = scanner.nextLine();
+        System.out.println("Address: ");
+        String address = scanner.nextLine();
+        System.out.println("Expense: ");
+        double expense = 0;
+        if(scanner.hasNextDouble()){
+            expense = scanner.nextDouble();
+        }
+        Membership newMembership = new Membership(ThreadLocalRandom.current().nextInt(14517880, 99999999 + 1), memberName, email, phone, address, expense);
+        this.loggedInUser.getMemberships().addMembership(newMembership);
+        System.out.println("New Membership added");
+        backToMainMenu(scanner);
     }
 
     public void displayViewMembership(Scanner scanner) {
         this.utils.membershipHeader();
         for(Membership membership: this.loggedInUser.getMemberships().getMembershipList()){
-            System.out.format(this.utils.membershipFormat, membership.getName(), membership.getName(), membership.getPhone(), membership.getType());
+            System.out.format(this.utils.membershipFormat, membership.getName(), membership.getEmail(), membership.getPhone(), membership.getType());
         }
         backToMainMenu(scanner);
     }
