@@ -92,11 +92,12 @@ public class Session {
         Session session = new Session();
         Scanner scanner = new Scanner(System.in);
         Utils utils = session.getUtils();
+        MMSLog mmsLog = new MMSLog();
         utils.welcomeScreen();
         Supermarket loggedInUser = session.startMenuRoutes(scanner);
         if(loggedInUser != null){
             session.printAdminMenus();
-            session.adminMenuRoutes(scanner, loggedInUser);
+            session.adminMenuRoutes(scanner, loggedInUser, mmsLog);
         }
     }
 
@@ -113,7 +114,6 @@ public class Session {
                 this.terminate();
                 break;
             default:
-                System.out.println("Invalid menu selected");
                 this.startMenuRoutes(scanner);
                 break;
         }
@@ -124,92 +124,102 @@ public class Session {
         System.out.println("Session Terminated!");
     }
 
-    private void adminMenuRoutes(Scanner scanner, Supermarket loggedInUser) {
+    private void adminMenuRoutes(Scanner scanner, Supermarket loggedInUser, MMSLog mmsLog) {
         System.out.print("Session Admin: " + loggedInUser.getName() + " - Commands (C/R/U/D/V/M/X): ");
         String menuId = scanner.nextLine();
         switch (menuId) {
             case "C":
-                this.displayAddMembership(scanner, loggedInUser);
+                this.displayAddMembership(scanner, loggedInUser, mmsLog);
                 break;
             case "R":
-                this.displayMembership(scanner, loggedInUser);
+                this.displayMembership(scanner, loggedInUser, mmsLog);
                 break;
             case "U":
-                this.displayUpdateMembership(scanner, loggedInUser);
+                this.displayUpdateMembership(scanner, loggedInUser, mmsLog);
                 break;
             case "D":
-                this.displayDeleteMembership(scanner, loggedInUser);
+                this.displayDeleteMembership(scanner, loggedInUser, mmsLog);
                 break;
             case "V":
-                this.displayMemberships(scanner, loggedInUser);
+                this.displayMemberships(scanner, loggedInUser, mmsLog);
                 break;
             case "M":
-                this.displaySlipReport(scanner, loggedInUser);
+                this.displaySlipReport(scanner, loggedInUser, mmsLog);
                 break;
             case "X":
                 this.displayLogout(scanner);
                 break;
             default:
-                System.out.println("Invalid menu selected");
-                this.adminMenuRoutes(scanner, loggedInUser);
+                this.adminMenuRoutes(scanner, loggedInUser, mmsLog);
                 break;
         }
     }
 
-    private void displaySlipReport(Scanner scanner, Supermarket loggedinuser) {
+    private void displaySlipReport(Scanner scanner, Supermarket loggedinuser, MMSLog mmsLog) {
         this.printMMSMenus();
-        this.mmsMenuRoutes(scanner, loggedinuser);
+        this.mmsMenuRoutes(scanner, loggedinuser, mmsLog, null);
     }
 
-    private void mmsMenuRoutes(Scanner scanner, Supermarket loggedInUser) {
+    private void mmsMenuRoutes(Scanner scanner, Supermarket loggedInUser, MMSLog mmsLog, MMS mms) {
         System.out.print("Session Admin: " + loggedInUser.getName() + " - Commands (F/V/A/R/S/X): ");
         String menuId = scanner.nextLine();
         switch (menuId) {
             case "F":
-                this.displaySlipDetails(scanner, loggedInUser);
+                this.displaySlipDetails(scanner, loggedInUser, mmsLog);
                 break;
             case "V":
-                this.displayMMSReport(scanner, loggedInUser);
+                this.displayMMSReport(scanner, loggedInUser, mmsLog);
                 break;
             case "A":
-                this.displayArchiveMMSReport(scanner, loggedInUser);
+                this.displayArchiveMMSReport(scanner, loggedInUser, mmsLog, mms);
                 break;
             case "R":
-                this.displayRetrieveMMSReport(scanner, loggedInUser);
+                this.displayRetrieveMMSReport(scanner, loggedInUser, mmsLog);
                 break;
             case "S":
-                this.displayShowMMSLog(scanner, loggedInUser);
+                this.displayShowMMSLog(scanner, loggedInUser, mmsLog);
                 break;
             case "X":
-                this.displayClose(scanner, loggedInUser);
+                this.displayClose(scanner, loggedInUser, mmsLog);
                 break;
             default:
                 System.out.println("Invalid menu selected");
-                this.mmsMenuRoutes(scanner, loggedInUser);
+                this.mmsMenuRoutes(scanner, loggedInUser, mmsLog, mms);
                 break;
         }
     }
 
-    private void displayClose(Scanner scanner, Supermarket loggedInUser) {
-        this.adminMenuRoutes(scanner, loggedInUser);
+    private void displayClose(Scanner scanner, Supermarket loggedInUser, MMSLog mmsLog) {
+        this.adminMenuRoutes(scanner, loggedInUser, mmsLog);
     }
 
-    private void displayShowMMSLog(Scanner scanner, Supermarket loggedInUser) {
+    private void displayShowMMSLog(Scanner scanner, Supermarket loggedInUser, MMSLog mmsLog) {
+        mmsLog.printMMSArchive();
+        this.mmsMenuRoutes(scanner, loggedInUser, mmsLog, null);
     }
 
-    private void displayRetrieveMMSReport(Scanner scanner, Supermarket loggedInUser) {
+    private void displayRetrieveMMSReport(Scanner scanner, Supermarket loggedInUser, MMSLog mmsLog) {
+        System.out.print("RecordID: ");
+        String recordId = scanner.nextLine();
+        mmsLog.retrieveMMS(recordId);
+        this.mmsMenuRoutes(scanner, loggedInUser, mmsLog, null);
     }
 
-    private void displayArchiveMMSReport(Scanner scanner, Supermarket loggedInUser) {
+    private void displayArchiveMMSReport(Scanner scanner, Supermarket loggedInUser, MMSLog mmsLog, MMS mms) {
+        if(mms != null){
+            String recordId = mmsLog.addMMS(loggedInUser, mms);
+            System.out.println("MMS record is created as: " + recordId);
+        }
+        this.mmsMenuRoutes(scanner, loggedInUser, mmsLog, null);
     }
 
-    private void displayMMSReport(Scanner scanner, Supermarket loggedInUser) {
+    private void displayMMSReport(Scanner scanner, Supermarket loggedInUser, MMSLog mmsLog) {
         MMS mms = new MMS(loggedInUser, loggedInUser.getMemberships());
         mms.printMMSReport();
-        this.mmsMenuRoutes(scanner, loggedInUser);
+        this.mmsMenuRoutes(scanner, loggedInUser, mmsLog, mms);
     }
 
-    private void displaySlipDetails(Scanner scanner, Supermarket loggedInUser) {
+    private void displaySlipDetails(Scanner scanner, Supermarket loggedInUser, MMSLog mmsLog) {
         System.out.print("Name: ");
         String name = scanner.nextLine();
         Optional<Membership> membership = loggedInUser.getMemberships().findMember(name);
@@ -219,10 +229,10 @@ public class Session {
         } else {
             System.out.println(name + " record does not exist!");
         }
-        this.mmsMenuRoutes(scanner, loggedInUser);
+        this.mmsMenuRoutes(scanner, loggedInUser, mmsLog, null);
     }
 
-    private void displayDeleteMembership(Scanner scanner, Supermarket loggedInUser) {
+    private void displayDeleteMembership(Scanner scanner, Supermarket loggedInUser, MMSLog mmsLog) {
         System.out.print("Name: ");
         String name = scanner.nextLine();
         Optional<Membership> membership = loggedInUser.getMemberships().findMember(name);
@@ -232,42 +242,57 @@ public class Session {
         } else {
             System.out.println(name + " record does not exist!");
         }
-        this.adminMenuRoutes(scanner, loggedInUser);
+        this.adminMenuRoutes(scanner, loggedInUser, mmsLog);
     }
 
     private void displayLogout(Scanner scanner) {
         this.terminate();
     }
 
-    private void displayUpdateMembership(Scanner scanner, Supermarket loggedInUser) {
-        System.out.println("Which user's expense want to update ?");
-        System.out.print("Type email: ");
-        String email = scanner.nextLine();
-        Optional<Membership> membership = this.supermarket.getMemberships().findMember(email);
+    private void displayUpdateMembership(Scanner scanner, Supermarket loggedInUser, MMSLog mmsLog) {
+        System.out.print("Name: ");
+        String name = scanner.nextLine();
+        Optional<Membership> membership = loggedInUser.getMemberships().findMember(name);
         if (membership.isPresent()) {
-            System.out.print("Enter expense amount: ");
+            Membership persisted = membership.get();
+            System.out.println("Updating " + name +" record:");
+            System.out.print("Name: ");
+            persisted.setName(scanner.nextLine());
+            System.out.print("Email: ");
+            persisted.setEmail(scanner.nextLine());
+            System.out.print("Phone: ");
+            persisted.setPhone(scanner.nextLine());
+            System.out.print("Address: ");
+            persisted.setAddress(scanner.nextLine());
+            System.out.print("ID: ");
+            persisted.setId(scanner.nextLine());
+            System.out.print("expense: ");
             if (scanner.hasNextDouble()) {
                 double expense = scanner.nextDouble();
-                this.supermarket.getMemberships().updateMember(email, expense);
-                System.out.println("Membership updated");
+                loggedInUser.getMemberships().updateMember(name, persisted);
+                System.out.println(name + " record has been updated.");
             }
+        } else{
+            System.out.println(name + " record does not exist!");
         }
-        this.adminMenuRoutes(scanner, loggedInUser);
+        this.adminMenuRoutes(scanner, loggedInUser, mmsLog);
     }
 
-    private void displayMembership(Scanner scanner, Supermarket loggedInUser) {
+    private void displayMembership(Scanner scanner, Supermarket loggedInUser, MMSLog mmsLog) {
         System.out.print("Name or email or phone number: ");
         String nameOrEmailOrPhone = scanner.nextLine();
         List<Membership> filteredResult = loggedInUser.getMemberships().searchMembership(nameOrEmailOrPhone);
-        this.utils.membershipHeader();
-        for (Membership membership : filteredResult) {
-            System.out.format(this.utils.membershipFormat, membership.getName(), membership.getName(), membership.getPhone(), membership.getType());
+        if(!filteredResult.isEmpty()){
+            this.utils.membershipHeader();
+            for (Membership membership : filteredResult) {
+                System.out.format(this.utils.membershipFormat, membership.getName(), membership.getName(), membership.getPhone(), membership.getType());
+            }
+            this.utils.membershipFooter();
         }
-        this.utils.membershipFooter();
-        backToAdminMenu(scanner, loggedInUser);
+        this.adminMenuRoutes(scanner, loggedInUser, mmsLog);
     }
 
-    private void displayAddMembership(Scanner scanner, Supermarket loggedInUser) {
+    private void displayAddMembership(Scanner scanner, Supermarket loggedInUser, MMSLog mmsLog) {
         System.out.print("Name: ");
         String memberName = scanner.nextLine();
         System.out.print("Email: ");
@@ -286,20 +311,16 @@ public class Session {
         Membership newMembership = new Membership(id, memberName, email, phone, address, expense);
         loggedInUser.getMemberships().addMembership(newMembership);
         System.out.println(memberName + " record has been created.");
-        backToAdminMenu(scanner, loggedInUser);
+        this.adminMenuRoutes(scanner, loggedInUser, mmsLog);
     }
 
-    public void displayMemberships(Scanner scanner, Supermarket loggedInUser) {
+    public void displayMemberships(Scanner scanner, Supermarket loggedInUser, MMSLog mmsLog) {
         this.utils.membershipHeader();
         for (Membership membership : loggedInUser.getMemberships().getMembershipList()) {
             System.out.format(this.utils.membershipFormat, membership.getName(), membership.getEmail(), membership.getPhone(), membership.getType());
         }
         this.utils.membershipFooter();
-        backToAdminMenu(scanner, loggedInUser);
-    }
-
-    public void backToAdminMenu(Scanner scanner, Supermarket loggedInUser) {
-        this.adminMenuRoutes(scanner, loggedInUser);
+        this.adminMenuRoutes(scanner, loggedInUser, mmsLog);
     }
 
     private List<Supermarket> initializeSupermarketsData() {

@@ -40,9 +40,9 @@ public class MMS {
         System.out.format(this.utils.sumFormat, "Total expense", getTotalExpense());
         System.out.format(this.utils.sumFormat, "Total credits", getTotalCredit());
         System.out.format(this.utils.sumFormat, "Total dollars", getTotalDollar());
-        System.out.format(this.utils.sumFormat, " Average pay per credit", getAveragePayPerCredit());
-        System.out.format(this.utils.sumFormat, " Average deduction rate", getAverageDeductionRate());
-        System.out.format(this.utils.sumFormat, " Average gas deduction rate", getAverageGasDeductionRate());
+        System.out.format(this.utils.sumFormat, "Average pay per credit", getAveragePayPerCredit());
+        System.out.format(this.utils.sumFormat, "Average deduction rate", getAverageDeductionRate());
+        System.out.format(this.utils.sumFormat, "Average gas deduction rate", getAverageGasDeductionRate());
         this.utils.sumFooter();
 
     }

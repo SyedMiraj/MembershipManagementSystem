@@ -65,96 +65,109 @@ public class Membership {
         return id;
     }
 
-    public void setId(String id) {
+    public Membership setId(String id) {
         this.id = id;
+        return this;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public Membership setName(String name) {
         this.name = name;
+        return this;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
+    public Membership setEmail(String email) {
         this.email = email;
+        return this;
     }
 
     public String getPhone() {
         return phone;
     }
 
-    public void setPhone(String phone) {
+    public Membership setPhone(String phone) {
         this.phone = phone;
+        return this;
     }
 
     public String getAddress() {
         return address;
     }
 
-    public void setAddress(String address) {
+    public Membership setAddress(String address) {
         this.address = address;
+        return this;
     }
 
     public String getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public Membership setType(String type) {
         this.type = type;
+        return this;
     }
 
     public double getPayPerCredit() {
         return payPerCredit;
     }
 
-    public void setPayPerCredit(double payPerCredit) {
+    public Membership setPayPerCredit(double payPerCredit) {
         this.payPerCredit = payPerCredit;
+        return this;
     }
 
     public double getTotalCredit() {
         return totalCredit;
     }
 
-    public void setTotalCredit(double totalCredit) {
+    public Membership setTotalCredit(double totalCredit) {
         this.totalCredit = totalCredit;
+        return this;
     }
 
     public double getDeductionRate() {
         return deductionRate;
     }
 
-    public void setDeductionRate(double deductionRate) {
+    public Membership setDeductionRate(double deductionRate) {
         this.deductionRate = deductionRate;
+        return this;
     }
 
     public double getGasDeductionRate() {
         return gasDeductionRate;
     }
 
-    public void setGasDeductionRate(double gasDeductionRate) {
+    public Membership setGasDeductionRate(double gasDeductionRate) {
         this.gasDeductionRate = gasDeductionRate;
+        return this;
     }
 
     public double getExpense() {
         return expense;
     }
 
-    public void setExpense(double expense) {
-        this.expense = expense;
+    public Membership setExpense(double expense) {
+        this.expense += expense;
+        updateMembership(expense);
+        return this;
     }
 
     public double getDollarAvailable() {
         return dollarAvailable;
     }
 
-    public void setDollarAvailable(double dollarAvailable) {
+    public Membership setDollarAvailable(double dollarAvailable) {
         this.dollarAvailable = dollarAvailable;
+        return this;
     }
 
     @Override

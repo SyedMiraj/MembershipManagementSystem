@@ -32,7 +32,7 @@ public class Utils {
         System.out.println("+-----------------------------+-----------+");
     }
 
-    public final String logFormat = "|%-12s|%-20s|";
+    public final String logFormat = "|%-12s|%-20s|%n";
     public void logHeader(){
         System.out.println("+------------+--------------------+");
         System.out.println("| MMS Record |   RecordID         |");
