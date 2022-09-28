@@ -8,6 +8,9 @@ public class Utils {
         System.out.println("|   Membership Name  |   Email                 |   Phone  |   Type   |");
         System.out.println("+--------------------+-------------------------+----------+----------+");
     }
+    public void membershipFooter(){
+        System.out.println("+--------------------+-------------------------+----------+----------+");
+    }
 
     public final String slipFormat = "|%-18s|%-12.f|%-18.2f|%-16d|%-14.2f|%-14d|%-10s|%n";
     public void slipHeader(){
