@@ -36,10 +36,10 @@ public class Memberships {
                 .collect(Collectors.toList());
     }
 
-    public Optional<Membership> findMember(String email){
+    public Optional<Membership> findMember(String name){
         return this.membershipList
                 .stream()
-                .filter(x -> x.getEmail().equals(email))
+                .filter(x -> x.getName().equals(name))
                 .findFirst();
     }
 

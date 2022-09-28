@@ -12,24 +12,33 @@ public class Utils {
         System.out.println("+--------------------+-------------------------+----------+----------+");
     }
 
-    public final String slipFormat = "|%-18s|%-12.f|%-18.2f|%-16d|%-14.2f|%-14d|%-10s|%n";
+    public final String slipFormat = "|%-18s|%-14.2f|%-20.2f|%-16.2f|%-16s|%n";
     public void slipHeader(){
         System.out.println("+------------------+--------------+--------------------+----------------+----------------+");
         System.out.println("|  Membership Name |   Expense    |   Credit           |   Dollars      |   Type         |");
         System.out.println("+------------------+--------------+--------------------+----------------+----------------+");
     }
+    public void slipFooter(){
+        System.out.println("+------------------+--------------+--------------------+----------------+----------------+");
+    }
 
-    public final String sumFormat = "|%-18s|%-9.2f|%n";
+    public final String sumFormat = "|%-29s|%-11.2f|%n";
     public void sumHeader(){
-        System.out.println("+-----------------+-----------+");
-        System.out.println("|   Title         |   Value   |");
-        System.out.println("+-----------------+-----------+");
+        System.out.println("+-----------------------------+-----------+");
+        System.out.println("|   Title                     |   Value   |");
+        System.out.println("+-----------------------------+-----------+");
+    }
+    public void sumFooter(){
+        System.out.println("+-----------------------------+-----------+");
     }
 
     public final String logFormat = "|%-12s|%-20s|";
     public void logHeader(){
         System.out.println("+------------+--------------------+");
         System.out.println("| MMS Record |   RecordID         |");
+        System.out.println("+------------+--------------------+");
+    }
+    public void logFooter(){
         System.out.println("+------------+--------------------+");
     }
 

@@ -144,7 +144,7 @@ public class Session {
                 this.displayMemberships(scanner, loggedInUser);
                 break;
             case "M":
-                this.displaySlipReport(scanner);
+                this.displaySlipReport(scanner, loggedInUser);
                 break;
             case "X":
                 this.displayLogout(scanner);
@@ -156,19 +156,81 @@ public class Session {
         }
     }
 
-    private void displaySlipReport(Scanner scanner) {
+    private void displaySlipReport(Scanner scanner, Supermarket loggedinuser) {
+        this.printMMSMenus();
+        this.mmsMenuRoutes(scanner, loggedinuser);
+    }
+
+    private void mmsMenuRoutes(Scanner scanner, Supermarket loggedInUser) {
+        System.out.print("Session Admin: " + loggedInUser.getName() + " - Commands (F/V/A/R/S/X): ");
+        String menuId = scanner.nextLine();
+        switch (menuId) {
+            case "F":
+                this.displaySlipDetails(scanner, loggedInUser);
+                break;
+            case "V":
+                this.displayMMSReport(scanner, loggedInUser);
+                break;
+            case "A":
+                this.displayArchiveMMSReport(scanner, loggedInUser);
+                break;
+            case "R":
+                this.displayRetrieveMMSReport(scanner, loggedInUser);
+                break;
+            case "S":
+                this.displayShowMMSLog(scanner, loggedInUser);
+                break;
+            case "X":
+                this.displayClose(scanner, loggedInUser);
+                break;
+            default:
+                System.out.println("Invalid menu selected");
+                this.mmsMenuRoutes(scanner, loggedInUser);
+                break;
+        }
+    }
+
+    private void displayClose(Scanner scanner, Supermarket loggedInUser) {
+        this.adminMenuRoutes(scanner, loggedInUser);
+    }
+
+    private void displayShowMMSLog(Scanner scanner, Supermarket loggedInUser) {
+    }
+
+    private void displayRetrieveMMSReport(Scanner scanner, Supermarket loggedInUser) {
+    }
+
+    private void displayArchiveMMSReport(Scanner scanner, Supermarket loggedInUser) {
+    }
+
+    private void displayMMSReport(Scanner scanner, Supermarket loggedInUser) {
+        MMS mms = new MMS(loggedInUser, loggedInUser.getMemberships());
+        mms.printMMSReport();
+        this.mmsMenuRoutes(scanner, loggedInUser);
+    }
+
+    private void displaySlipDetails(Scanner scanner, Supermarket loggedInUser) {
+        System.out.print("Name: ");
+        String name = scanner.nextLine();
+        Optional<Membership> membership = loggedInUser.getMemberships().findMember(name);
+        if (membership.isPresent()) {
+            MMSlip mmSlip = new MMSlip(membership.get());
+            mmSlip.printSlip();
+        } else {
+            System.out.println(name + " record does not exist!");
+        }
+        this.mmsMenuRoutes(scanner, loggedInUser);
     }
 
     private void displayDeleteMembership(Scanner scanner, Supermarket loggedInUser) {
-        System.out.println("Which user want to remove ?");
-        System.out.print("Type email: ");
-        String email = scanner.nextLine();
-        Optional<Membership> membership = this.supermarket.getMemberships().findMember(email);
+        System.out.print("Name: ");
+        String name = scanner.nextLine();
+        Optional<Membership> membership = loggedInUser.getMemberships().findMember(name);
         if (membership.isPresent()) {
-            this.supermarket.getMemberships().removeMembership(membership.get());
-            System.out.println("Membership deleted");
+            loggedInUser.getMemberships().removeMembership(membership.get());
+            System.out.println(name + " record has been deleted.");
         } else {
-            System.out.println("No Membership found.");
+            System.out.println(name + " record does not exist!");
         }
         this.adminMenuRoutes(scanner, loggedInUser);
     }

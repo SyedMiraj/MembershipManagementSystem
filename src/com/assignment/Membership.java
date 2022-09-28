@@ -57,7 +57,8 @@ public class Membership {
             this.deductionRate = 0.25;
             this.gasDeductionRate = 0.3;
         }
-
+        this.totalCredit = this.payPerCredit * expense;
+        this.dollarAvailable = this.totalCredit / 200;
     }
 
     public String getId() {
