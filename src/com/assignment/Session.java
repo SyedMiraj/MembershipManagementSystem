@@ -214,7 +214,10 @@ public class Session {
     }
 
     private void displayMMSReport(Scanner scanner, Supermarket loggedInUser, MMSLog mmsLog) {
-        MMS mms = new MMS(loggedInUser, loggedInUser.getMemberships());
+        List<Membership> membershipList = new ArrayList<>(loggedInUser.getMemberships().getMembershipList());
+        Memberships memberships = new Memberships();
+        memberships.setMembershipList(membershipList);
+        MMS mms = new MMS(loggedInUser, memberships);
         mms.printMMSReport();
         this.mmsMenuRoutes(scanner, loggedInUser, mmsLog, mms);
     }

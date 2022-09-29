@@ -1,16 +1,17 @@
 package com.assignment;
 
+import java.util.List;
+
 public class MMS {
 
     private Supermarket supermarket;
 
     private Memberships memberships;
-    private Utils utils;
+    private Utils utils = new Utils();
 
     public MMS(Supermarket supermarket, Memberships memberships) {
         this.supermarket = supermarket;
         this.memberships = memberships;
-        utils = new Utils();
     }
 
     public Supermarket getSupermarket() {

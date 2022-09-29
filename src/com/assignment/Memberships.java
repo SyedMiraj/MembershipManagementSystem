@@ -20,6 +20,10 @@ public class Memberships {
         membershipList.add(new Membership("13859610", "Monica Shwarz", "monica.s@uts.com", "92241188", "151 Jones St. Sydney 2100", 6741.2));
     }
 
+    public Memberships(List<Membership> membershipList) {
+        this.membershipList = membershipList;
+    }
+
     public void addMembership(Membership membership){
         this.membershipList.add(membership);
     }
